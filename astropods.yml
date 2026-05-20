@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://astropods.com/schema/package.json
+spec: package/v1
+name: muster
+
+agent:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  interfaces:
+    messaging: true
+  inputs:
+    - name: MUSTER_SCHEDULES
+      datatype: string
+      optional: true
+      default: 'example:* * * * *'
+      description: 'Comma-separated cron schedules `<skill>:<cron>` (e.g. `digest:0 9 * * *,sweep:*/15 * * * *`). The skill name must match a file in /skills. Default fires the bundled `example` skill every minute so a fresh install has visible activity out of the box.'
+    - name: SLACK_CHANNEL
+      datatype: string
+      optional: true
+      description: Slack channel ID (preferred) or `#name` to post cron run results to. Requires the `slack` messaging adapter to be enabled (Slack bot credentials are managed by the platform, not declared here).
+
+models:
+  anthropic:
+    provider: anthropic
+
+dev:
+  interfaces:
+    messaging:
+      adapters: [web, slack]
+      slack:
+        socket_mode: true
+        auto_thread: true

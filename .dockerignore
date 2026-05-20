@@ -1,0 +1,8 @@
+.git
+.gitignore
+.ast
+node_modules
+*.log
+.env
+.env.*
+.DS_Store
